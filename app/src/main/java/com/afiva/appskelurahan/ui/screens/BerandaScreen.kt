@@ -217,7 +217,7 @@ fun BannerSection() {
                             .background(Color.White),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("3", fontWeight = FontWeight.Bold, color = Color(0xFF2196F3))
+                        Text("5", fontWeight = FontWeight.Bold, color = Color(0xFF2196F3))
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Surat selesai", color = Color.White, fontWeight = FontWeight.Medium)
