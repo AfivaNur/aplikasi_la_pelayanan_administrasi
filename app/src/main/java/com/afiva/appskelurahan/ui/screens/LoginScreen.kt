@@ -1,5 +1,6 @@
 package com.afiva.appskelurahan.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -90,6 +91,7 @@ fun loginScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
+
                         navController.navigate(Screen.Beranda.route) {
                             popUpTo(Screen.Login.route) { inclusive = true }
                         }

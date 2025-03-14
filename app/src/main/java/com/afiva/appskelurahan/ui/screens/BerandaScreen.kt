@@ -1,323 +1,83 @@
 package com.example.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.afiva.appskelurahan.R
 
+//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BerandaScreen(navController: NavController) {
-    Scaffold (bottomBar = {
-        BottomNavigationBar()
-    }){ innerPadding ->
+fun MainScreen(navController: NavController) {
+    Scaffold (
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
+        topBar = {TopBar()},
+        bottomBar = {BottomNavigation()}
+    ){ innerPadding ->
         Column(
             modifier = Modifier
-                .fillMaxSize().padding(innerPadding)
-                .background(Color.White).verticalScroll(rememberScrollState())
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .background(Color(0xFFF2F2F2)).padding(innerPadding)
         ) {
-            TopBar()
-            SearchBar()
-            BannerSection()
-            Spacer(modifier = Modifier.height(16.dp))
-            CategoryGrid()
-            Spacer(modifier = Modifier.height(16.dp))
-            TutorialSection()
-            Spacer(modifier = Modifier.weight(1f))
 
+            SearchBar()
+            PopulationCard()
+            SuratPengantarRTCard()
+            ServicesSection()
+            InformationSection()
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
 @Composable
 fun TopBar() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column {
-            // Use Text instead of Image for the logo to avoid resource issues
-            Text(
-                text = "LaTalKer",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF2196F3),
-                modifier = Modifier.padding(vertical = 16.dp) // Jarak atas & bawah 16dp
-            )
-
-            Text(
-                "Hai, Selamat Datang!",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.DarkGray
-            )
-            Text(
-                text = "Di Layanan Kelurahan Talang Keramat",
-                fontSize = 14.sp,
-                color = Color.Gray,
-            )
-
-        }
-
-        // Use IconButton with a basic Icon to avoid resource issues
-        IconButton(
-            onClick = { /* Help Action */ },
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(Color.White)
-        ) {
-            Icon(
-                imageVector = androidx.compose.material.icons.Icons.Default.Info,
-                contentDescription = "Help",
-                tint = Color.Gray
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchBar() {
-    var text by remember { mutableStateOf("") }
-    OutlinedTextField(
-        value = text,
-        onValueChange = { text = it },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        placeholder = { Text("Lagi mau bikin surat apa?", color = Color.LightGray) },
-        leadingIcon = {
-            Icon(
-                imageVector = androidx.compose.material.icons.Icons.Default.Search,
-                contentDescription = "Search",
-                tint = Color.Gray
-            )
-        },
-        shape = RoundedCornerShape(16.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = Color.LightGray,
-            focusedBorderColor = Color(0xFF2196F3)
-        ),
-        singleLine = true
-    )
-}
-
-@Composable
-fun BannerSection() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(150.dp)
-            .padding(horizontal = 24.dp, vertical = 16.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(Color(0xFF2196F3))
-    ) {
-        // Create a placeholder banner instead of using Image resource
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                modifier = Modifier.weight(2f),
-                verticalArrangement = Arrangement.Center
-            ) {
-                // Step 1
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(vertical = 4.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("1", fontWeight = FontWeight.Bold, color = Color(0xFF2196F3))
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Tambahkan akun", color = Color.White, fontWeight = FontWeight.Medium)
-                }
-
-                // Connector line
-                Box(
-                    modifier = Modifier
-                        .width(2.dp)
-                        .height(8.dp)
-                        .background(Color.White)
-                        .padding(start = 20.dp)
-                )
-
-                // Step 2
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(vertical = 4.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("2", fontWeight = FontWeight.Bold, color = Color(0xFF2196F3))
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Pilih template", color = Color.White, fontWeight = FontWeight.Medium)
-                }
-
-                // Connector line
-                Box(
-                    modifier = Modifier
-                        .width(2.dp)
-                        .height(8.dp)
-                        .background(Color.White)
-                        .padding(start = 20.dp)
-                )
-
-                // Step 3
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(vertical = 4.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("5", fontWeight = FontWeight.Bold, color = Color(0xFF2196F3))
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Surat selesai", color = Color.White, fontWeight = FontWeight.Medium)
-                }
-            }
-
-            // Right side image placeholder
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .background(Color.White.copy(alpha = 0.3f))
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun CategoryGrid() {
-    // kategori ikon/ fitur layanan
-    val categories = listOf(
-        Triple("Sekolah", androidx.compose.material.icons.Icons.Default.Home, Color(0xFFF5F5F5)),
-        Triple("Pekerjaan", androidx.compose.material.icons.Icons.Default.Home, Color(0xFFF5F5F5)),
-        Triple("Desa", androidx.compose.material.icons.Icons.Default.Home, Color(0xFFF5F5F5)),
-        Triple("Bisnis", androidx.compose.material.icons.Icons.Default.Home, Color(0xFFF5F5F5)),
-        Triple("Umum", androidx.compose.material.icons.Icons.Default.Home, Color(0xFFF5F5F5)),
-        Triple("Keuangan", androidx.compose.material.icons.Icons.Default.Home, Color(0xFFF5F5F5)),
-        Triple("Pribadi", androidx.compose.material.icons.Icons.Default.Home, Color(0xFFF5F5F5)),
-        Triple("Kesehatan", androidx.compose.material.icons.Icons.Default.Home, Color(0xFFF5F5F5))
-    )
-
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            for (i in 0..3) {
-                CategoryItemWithVector(categories[i])
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            for (i in 4..7) {
-                CategoryItemWithVector(categories[i])
-            }
-        }
-    }
-}
-
-// Updated CategoryItem to use vector icons
-@Composable
-fun CategoryItemWithVector(category: Triple<String, androidx.compose.ui.graphics.vector.ImageVector, Color>) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(80.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(70.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(category.third)
-                .padding(12.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = category.second,
-                contentDescription = category.first,
-                modifier = Modifier.size(40.dp),
-                tint = Color(0xFF2196F3)
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = category.first,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
-        )
-    }
-}
-
-@Composable
-fun TutorialSection() {
     Card(
+
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5))
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        shape = RoundedCornerShape(0.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
             modifier = Modifier
@@ -327,31 +87,21 @@ fun TutorialSection() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text(
-                    "Lihat Tutorial",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    color = Color.DarkGray
-                )
-                Text(
-                    "Bikin surat hanya dalam 1 menit",
-                    fontSize = 14.sp,
-                    color = Color.Gray
-                )
+                Text("SI TALKER", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text("Hai, Selamat Datang !", fontSize = 14.sp, color = Color.Gray)
+                Text("Di Layanan Kelurahan Talang Keramat", fontSize = 12.sp, color = Color.Gray)
             }
-
-            Box(
+            IconButton(
+                onClick = { },
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(40.dp)
                     .clip(CircleShape)
-                    .background(Color(0xFF00BCD4)),
-                contentAlignment = Alignment.Center
+                    .background(Color.White)
             ) {
                 Icon(
-                    imageVector = androidx.compose.material.icons.Icons.Default.PlayArrow,
-                    contentDescription = "Play",
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    Icons.Filled.Notifications,
+                    contentDescription = "Notifications",
+                    tint = Color.Black
                 )
             }
         }
@@ -359,51 +109,352 @@ fun TutorialSection() {
 }
 
 @Composable
-fun BottomNavigationBar() {
-    var selectedItem by remember { mutableStateOf(0) }
-    val items = listOf(
-        Pair("Beranda", androidx.compose.material.icons.Icons.Default.Home),
-        Pair("File Saya", androidx.compose.material.icons.Icons.Default.Home),
-        Pair("Akun", androidx.compose.material.icons.Icons.Default.Person),
-        Pair("Pengaturan", androidx.compose.material.icons.Icons.Default.Settings)
-    )
-
-    NavigationBar(
-        containerColor = Color.White,
-        contentColor = Color(0xFF00BCD4),
-        tonalElevation = 8.dp
+fun SearchBar() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        items.forEachIndexed { index, item ->
-            NavigationBarItem(
-                icon = {
-                    Icon(
-                        imageVector = item.second,
-                        contentDescription = item.first,
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                label = {
-                    Text(
-                        item.first,
-                        fontSize = 12.sp
-                    )
-                },
-                selected = selectedItem == index,
-                onClick = { selectedItem = index },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color(0xFF00BCD4),
-                    selectedTextColor = Color(0xFF00BCD4),
-                    indicatorColor = Color.White,
-                    unselectedIconColor = Color.Gray,
-                    unselectedTextColor = Color.Gray
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = { Text("Cari", color = Color.Gray) },
+            trailingIcon = {
+                Icon(
+                    Icons.Filled.Search,
+                    contentDescription = "Search",
+                    tint = Color.Gray
                 )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFE6E6E6), RoundedCornerShape(24.dp)),
+            shape = RoundedCornerShape(24.dp)
+        )
+    }
+}
+
+@Composable
+fun PopulationCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                "PENDUDUK TALANG KERAMAT",
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                PopulationStat("Total Penduduk", "0")
+
+                Box(
+                    modifier = Modifier
+                        .height(60.dp)
+                        .width(1.dp)
+                        .background(Color.LightGray)
+                )
+
+                PopulationStat("Laki-laki", "0", true)
+
+                Box(
+                    modifier = Modifier
+                        .height(60.dp)
+                        .width(1.dp)
+                        .background(Color.LightGray)
+                )
+
+                PopulationStat("Perempuan", "0", true)
+            }
+        }
+    }
+}
+
+@Composable
+fun PopulationStat(label: String, value: String, showIcon: Boolean = false) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            label,
+            fontWeight = FontWeight.Bold,
+            fontSize = 12.sp,
+            textAlign = TextAlign.Center
+        )
+
+        if (showIcon) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    Icons.Default.Person,
+                    contentDescription = label,
+                    modifier = Modifier.size(16.dp),
+                    tint = Color.Gray
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    value,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else {
+            Text(
+                value,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
             )
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun BerandaScreenPreview() {
-    BerandaScreen(navController = rememberNavController())
+fun SuratPengantarRTCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFEEEEEE)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Document icon placeholder
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(Color.White, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Document",
+                    tint = Color.Gray
+                )
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Text(
+                "Surat Pengantar RT",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Edit icon placeholder
+            Box(
+                modifier = Modifier
+                    .size(24.dp)
+                    .background(Color.Transparent),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Edit",
+                    tint = Color.Gray
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ServicesSection() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            "PELAYANAN",
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // First row
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            ServiceItem("DOMISILI")
+            ServiceItem("KELAHIRAN")
+            ServiceItem("KEMATIAN")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Second row
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            ServiceItem("PINDAH")
+            ServiceItem("PERNIKAHAN")
+            ServiceItem("AHLI WARIS")
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Third row
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            ServiceItem("TIDAK MAMPU")
+            ServiceItem("USAHA")
+            ServiceItem("LAINNYA")
+        }
+    }
+}
+
+@Composable
+fun ServiceItem(title: String) {
+    Card(
+        modifier = Modifier
+            .size(100.dp, 80.dp)
+            .padding(4.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(
+                title,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun InformationSection() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Info",
+                    tint = Color.Gray,
+                    modifier = Modifier.size(24.dp)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    "INFORMASI",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                "Pastikan semua dokumen telah di cek 2x sebelum melakukan pengajuan pelayanan!",
+                fontSize = 12.sp,
+                color = Color.Gray
+            )
+        }
+    }
+}
+
+@Composable
+fun BottomNavigation(modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(60.dp),
+        shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Home
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Default.Home,
+                    contentDescription = "Home",
+                    tint = Color.Gray
+                )
+            }
+
+            // Profile
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Default.Person,
+                    contentDescription = "Profile",
+                    tint = Color.Gray
+                )
+            }
+
+            // QR Code (placeholder)
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = "QR Code",
+                    tint = Color.Gray
+                )
+            }
+
+            // Settings (placeholder)
+            IconButton(onClick = { }) {
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = "Settings",
+                    tint = Color.Gray
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun BerandaPreview(){
+    MainScreen(rememberNavController())
 }
